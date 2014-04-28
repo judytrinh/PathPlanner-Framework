@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System;
 using System.Runtime.InteropServices;
+using System.Collections.Generic;
 
 public class BehaviorScript : MonoBehaviour 
 {
@@ -33,8 +34,6 @@ public class BehaviorScript : MonoBehaviour
 	
 	Vector3 oldTargetPos;
 
-	GameObject[] hidingSpots;
-
 	void Start () 
 	{
 		gscript = GameObject.Find("Global").GetComponent<GlobalScript>(); 
@@ -46,14 +45,12 @@ public class BehaviorScript : MonoBehaviour
 		startPos = new float[3];
 		oldTargetPos = new Vector3(0,0,0);
 
-		hidingSpots = GameObject.FindGameObjectsWithTag("HidingArea");
-
 		target = GameObject.Find("Target");
 
-		GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
-		if (hidingSpot != null) {
-			target = hidingSpot;
-		}
+		//GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
+		//if (hidingSpot != null) {
+		//	target = hidingSpot;
+		//}
 
 		player = GameObject.Find("Player");
 		
@@ -65,10 +62,11 @@ public class BehaviorScript : MonoBehaviour
 	{	
 		behavior = (int)Behaviors.followpath;
 		//target = GameObject.Find("Target");
-		GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
-		if (hidingSpot != null) {
-			target = hidingSpot;
-		}
+		SeekClosestSpot();
+		//GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
+		//if (hidingSpot != null) {
+		//	target = hidingSpot;
+		//}
 		if (target.transform.position != oldTargetPos)
 			computePath();
 		
@@ -144,6 +142,26 @@ public class BehaviorScript : MonoBehaviour
 			startPos[i] = transform.position[i];
 		}
 		SetPath(agentID, startPos, targetPos);
+	}
+
+	// seeks closest hiding spot. return the closest hiding spot.
+	public GameObject SeekClosestSpot() {
+		List<GameObject> spots = mscript.HPList;
+		// If there are no hiding spots, do nuthin
+		if (spots.Count == 0) return null;
+
+		// otherwise calculate the closest
+		GameObject closest = spots[0];
+		float closestDist = Mathf.Infinity;
+		for (int i = 0; i < spots.Count; i++) {
+			float dist = (gameObject.transform.position - spots[i].transform.position).magnitude;
+			if (dist < closestDist) {
+				closest = spots[i];
+				closestDist = dist;
+			}
+		}
+		target = closest;
+		return closest;
 	}
 	
 }
