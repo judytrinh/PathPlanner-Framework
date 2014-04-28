@@ -157,6 +157,7 @@ public class BehaviorScript : MonoBehaviour
 			
 		}
 	}
+
 	public void computePath()
 	{
 		for (int i=0; i<3; i++)

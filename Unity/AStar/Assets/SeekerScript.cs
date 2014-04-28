@@ -9,7 +9,8 @@ public class SeekerScript : MonoBehaviour {
 	GameObject[] agents;
 	float lineOfSightLength;
 	public LayerMask agentLayer;
-
+	
+	public GameObject bulletPrefab;
 	// Use this for initialization
 	void Start () {
 		agents = GameObject.Find("Global").GetComponent<GlobalScript>().agents;
@@ -21,6 +22,13 @@ public class SeekerScript : MonoBehaviour {
 		GameObject seenAgent = DetectAgent();
 		if (seenAgent != null) {
 			seenAgent.GetComponent<BehaviorScript>().SetSeen(true);
+		}
+
+		
+		
+		// bulletsssssssssssssssss
+		if (Input.GetKeyDown(KeyCode.Q)) {
+			GameObject b = (GameObject)Instantiate(bulletPrefab, gameObject.transform.position, Quaternion.identity);
 		}
 	}
 
