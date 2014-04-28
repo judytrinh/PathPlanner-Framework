@@ -35,6 +35,7 @@ public class BehaviorScript : MonoBehaviour
 	Vector3 oldTargetPos;
 
 	GameObject seekTarget; // the big red one
+	GameObject occupyingSpot;
 	bool occupying;
 	bool seen;
 
@@ -53,6 +54,7 @@ public class BehaviorScript : MonoBehaviour
 		seekTarget = GameObject.Find("Target");
 
 		target = seekTarget;
+		occupyingSpot = null;
 		occupying = false;
 		seen = false;
 		//GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
@@ -196,8 +198,16 @@ public class BehaviorScript : MonoBehaviour
 		if (closestUnoccupiedDist < 1.0f) {
 			closestUnoccupied.GetComponent<HidingSpotScript>().SetOccupied(true);
 			occupying = true;
+			occupyingSpot = closestUnoccupied;
+			Invoke("unoccupy", 5);
 		}
 		//Debug.Log (closestUnoccupied.GetComponent<HidingSpotScript>().IsOccupied());
 		return closestUnoccupied;
+	}
+
+	public void unoccupy() {
+		occupying = false;
+		occupyingSpot.GetComponent<HidingSpotScript> ().SetOccupied (false);
+		SetSeen (false);
 	}
 }
