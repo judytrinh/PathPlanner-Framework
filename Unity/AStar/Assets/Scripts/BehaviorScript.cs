@@ -34,6 +34,10 @@ public class BehaviorScript : MonoBehaviour
 	
 	Vector3 oldTargetPos;
 
+	GameObject seekTarget;
+
+	bool occupying;
+
 	void Start () 
 	{
 		gscript = GameObject.Find("Global").GetComponent<GlobalScript>(); 
@@ -45,8 +49,11 @@ public class BehaviorScript : MonoBehaviour
 		startPos = new float[3];
 		oldTargetPos = new Vector3(0,0,0);
 
-		target = GameObject.Find("Target");
+		
+		seekTarget = GameObject.Find("Target");
 
+		target = seekTarget;
+		occupying = false;
 		//GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
 		//if (hidingSpot != null) {
 		//	target = hidingSpot;
@@ -149,19 +156,27 @@ public class BehaviorScript : MonoBehaviour
 		List<GameObject> spots = mscript.HPList;
 		// If there are no hiding spots, do nuthin
 		if (spots.Count == 0) return null;
+		if (occupying) return null;
 
 		// otherwise calculate the closest
-		GameObject closest = spots[0];
-		float closestDist = Mathf.Infinity;
+		GameObject closestUnoccupied = null;
+		float closestUnoccupiedDist = Mathf.Infinity;
 		for (int i = 0; i < spots.Count; i++) {
 			float dist = (gameObject.transform.position - spots[i].transform.position).magnitude;
-			if (dist < closestDist) {
-				closest = spots[i];
-				closestDist = dist;
+			if (dist < closestUnoccupiedDist && !spots[i].GetComponent<HidingSpotScript>().IsOccupied()) {
+				closestUnoccupied = spots[i];
+				closestUnoccupiedDist = dist;
 			}
 		}
-		target = closest;
-		return closest;
+		if (closestUnoccupied != null) target = closestUnoccupied;
+		else if (!occupying) target = seekTarget;
+		//Debug.Log (closestUnoccupiedDist);
+		if (closestUnoccupiedDist < 1.0f) {
+			closestUnoccupied.GetComponent<HidingSpotScript>().SetOccupied(true);
+			occupying = true;
+		}
+		//Debug.Log (closestUnoccupied.GetComponent<HidingSpotScript>().IsOccupied());
+		return closestUnoccupied;
 	}
 	
 }

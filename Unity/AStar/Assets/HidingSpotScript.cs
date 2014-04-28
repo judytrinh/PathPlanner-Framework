@@ -3,13 +3,18 @@ using System.Collections;
 
 public class HidingSpotScript : MonoBehaviour {
 
+	public bool occupied;
+
 	// Use this for initialization
 	void Start () {
-	
+		occupied = false;
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+
+	public void SetOccupied(bool oc) {
+		occupied = oc;
+	}
+
+	public bool IsOccupied() {
+		return occupied;
 	}
 }
