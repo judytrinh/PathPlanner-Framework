@@ -63,20 +63,27 @@ public class BehaviorScript : MonoBehaviour
 		player = GameObject.Find("Player");
 		
 		behavior = (int)Behaviors.followpath;
-		
+
+		InvokeRepeating ("moveTargetAround", 1, 1);
 	}
 	
 	void FixedUpdate () 
 	{	
 		behavior = (int)Behaviors.followpath;
 		//target = GameObject.Find("Target");
-		if (seen) SeekClosestSpot();
+		if (seen) {
+			SeekClosestSpot();
+			if (target.transform.position != oldTargetPos)
+				computePath();
+		}
+		else {
+			target = seekTarget;
+		}
 		//GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
 		//if (hidingSpot != null) {
 		//	target = hidingSpot;
 		//}
-		if (target.transform.position != oldTargetPos)
-			computePath();
+		
 		
 		for (int i=0; i<3; i++)
 			targetPos[i] = target.transform.position[i];
@@ -91,7 +98,13 @@ public class BehaviorScript : MonoBehaviour
 		
 		oldTargetPos = target.transform.position;
 	}
-	
+
+	void moveTargetAround() {
+		seekTarget.transform.position = new Vector3(UnityEngine.Random.Range(-39,39),0,UnityEngine.Random.Range(-39,39));
+		if (target.transform.position != oldTargetPos)
+			computePath();
+	}
+
 	void Update()
 	{
 		float vel = rigidbody.velocity.magnitude;
