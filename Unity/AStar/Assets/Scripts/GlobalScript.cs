@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Runtime.InteropServices;
 
+using System.Collections.Generic;
+
 public class GlobalScript : MonoBehaviour 
 {
 	enum Behaviors {alignment, arrival, avoid, cohesion, departure, flee, flocking, followpath, leader, seek, separation, wander};

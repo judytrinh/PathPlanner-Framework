@@ -162,7 +162,11 @@ public class MapScript : MonoBehaviour
 		
 		for (int i=0; i<HPList.Count; i++)
 			Destroy(HPList[i]);
-		
+
+		BehaviorScript bs0 = GameObject.Find("Agent0").GetComponent<BehaviorScript>();
+		BehaviorScript bs1 = GameObject.Find("Agent1").GetComponent<BehaviorScript>();
+		bs0.target = GameObject.Find("Target");
+		bs1.target = GameObject.Find("Target");
 		HPList.Clear();
 	}
 	void instantiateBoundary()

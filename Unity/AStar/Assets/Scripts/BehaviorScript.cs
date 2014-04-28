@@ -33,6 +33,8 @@ public class BehaviorScript : MonoBehaviour
 	
 	Vector3 oldTargetPos;
 
+	GameObject[] hidingSpots;
+
 	void Start () 
 	{
 		gscript = GameObject.Find("Global").GetComponent<GlobalScript>(); 
@@ -43,8 +45,16 @@ public class BehaviorScript : MonoBehaviour
 		targetPos = new float[3];
 		startPos = new float[3];
 		oldTargetPos = new Vector3(0,0,0);
-		
+
+		hidingSpots = GameObject.FindGameObjectsWithTag("HidingArea");
+
 		target = GameObject.Find("Target");
+
+		GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
+		if (hidingSpot != null) {
+			target = hidingSpot;
+		}
+
 		player = GameObject.Find("Player");
 		
 		behavior = (int)Behaviors.followpath;
@@ -54,7 +64,11 @@ public class BehaviorScript : MonoBehaviour
 	void FixedUpdate () 
 	{	
 		behavior = (int)Behaviors.followpath;
-		target = GameObject.Find("Target");
+		//target = GameObject.Find("Target");
+		GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
+		if (hidingSpot != null) {
+			target = hidingSpot;
+		}
 		if (target.transform.position != oldTargetPos)
 			computePath();
 		
