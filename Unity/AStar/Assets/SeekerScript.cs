@@ -18,7 +18,10 @@ public class SeekerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		DetectAgent();
+		GameObject seenAgent = DetectAgent();
+		if (seenAgent != null) {
+			seenAgent.GetComponent<BehaviorScript>().SetSeen(true);
+		}
 	}
 
 	// detect agent when in line of sight

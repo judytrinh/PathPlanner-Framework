@@ -36,6 +36,7 @@ public class BehaviorScript : MonoBehaviour
 
 	GameObject seekTarget; // the big red one
 	bool occupying;
+	bool seen;
 
 	void Start () 
 	{
@@ -53,6 +54,7 @@ public class BehaviorScript : MonoBehaviour
 
 		target = seekTarget;
 		occupying = false;
+		seen = false;
 		//GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
 		//if (hidingSpot != null) {
 		//	target = hidingSpot;
@@ -68,7 +70,7 @@ public class BehaviorScript : MonoBehaviour
 	{	
 		behavior = (int)Behaviors.followpath;
 		//target = GameObject.Find("Target");
-		SeekClosestSpot();
+		if (seen) SeekClosestSpot();
 		//GameObject hidingSpot = GameObject.Find("HidingSpot(Clone)");
 		//if (hidingSpot != null) {
 		//	target = hidingSpot;
@@ -148,6 +150,14 @@ public class BehaviorScript : MonoBehaviour
 			startPos[i] = transform.position[i];
 		}
 		SetPath(agentID, startPos, targetPos);
+	}
+
+	public void SetSeen(bool se) {
+		seen = se;
+	}
+
+	public bool WasSeen() {
+		return seen;
 	}
 
 	// seeks closest hiding spot. return the closest hiding spot.
