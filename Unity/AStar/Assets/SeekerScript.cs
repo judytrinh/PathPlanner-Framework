@@ -22,20 +22,21 @@ public class SeekerScript : MonoBehaviour {
 	}
 
 	// detect agent when in line of sight
-	public bool DetectAgent() {
+	public GameObject DetectAgent() {
 		Debug.Log (gameObject.transform.forward);
-		foreach (GameObject a in agents) {
-			Vector3 start = gameObject.transform.position;
-			start.y += 1.0f;
-			Vector3 dir = gameObject.transform.forward;
-			Debug.DrawRay(start, dir * lineOfSightLength, Color.red);
-			if (Physics.Raycast(start, dir, lineOfSightLength, agentLayer)) {
-				print("There is something in front of the object!");
-			
-			}
+		//foreach (GameObject a in agents) {
+		Vector3 start = gameObject.transform.position;
+		start.y += 1.0f;
+		Vector3 dir = gameObject.transform.forward;
+		Debug.DrawRay(start, dir * lineOfSightLength, Color.red);
+		RaycastHit hit;
+		if (Physics.Raycast(start, dir, out hit, lineOfSightLength, agentLayer)) {
+			print("There is something in front of the object!");
+			return hit.rigidbody.gameObject;
+		}
 			//Debug.DrawLine(gameObject.transform.position, a.transform.position, Color.red);
 
-		}
-		return true;
+		//}
+		return null;
 	}
 }
