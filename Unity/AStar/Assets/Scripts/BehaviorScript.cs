@@ -34,8 +34,7 @@ public class BehaviorScript : MonoBehaviour
 	
 	Vector3 oldTargetPos;
 
-	GameObject seekTarget;
-
+	GameObject seekTarget; // the big red one
 	bool occupying;
 
 	void Start () 
@@ -178,5 +177,4 @@ public class BehaviorScript : MonoBehaviour
 		//Debug.Log (closestUnoccupied.GetComponent<HidingSpotScript>().IsOccupied());
 		return closestUnoccupied;
 	}
-	
 }
